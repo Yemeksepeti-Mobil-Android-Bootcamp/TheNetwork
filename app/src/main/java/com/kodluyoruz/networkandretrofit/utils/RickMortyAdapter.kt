@@ -44,6 +44,12 @@ class RickMortyAdapter : RecyclerView.Adapter<RickMortyAdapter.RickMortyViewHold
         notifyDataSetChanged()
     }
 
+    fun insertRickMortyData(list: List<Character>) {
+        val listIndex = this.list.size
+        this.list.addAll(ArrayList(list))
+        notifyItemInserted(listIndex)
+    }
+
 
 
 }

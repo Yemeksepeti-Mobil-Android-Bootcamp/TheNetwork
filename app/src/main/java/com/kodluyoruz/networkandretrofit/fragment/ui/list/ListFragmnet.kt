@@ -20,6 +20,7 @@ class ListFragment : Fragment() {
     private val retrofitHelper = RetrofitHelper()
     private var adapter = RickMortyAdapter()
     private var page = 1
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -50,10 +51,36 @@ class ListFragment : Fragment() {
             }
         })
     }
+    private fun fetchDataWithScroll(page: Int = 1) {
+        Log.v("ListFragment", "fetchData")
+        Toast.makeText(context, "Page Number: $page", Toast.LENGTH_SHORT).show()
+        retrofitHelper.listCharacter(page = page, object : RetrofitResponseHandler {
+            override fun onError() {
+                Log.v("MainActivity", "Error :(")
+
+            }
+
+            override fun onResponse(response: RickAndMortyBaseResponse) {
+                Log.v("ListFragment", "onResponse")
+                adapter.insertRickMortyData(response.characters)
+            }
+        })
+    }
 
     private fun initViews(view: View) {
         val recyclerView: RecyclerView = view.findViewById(R.id.rickAndMortyRecyclerView)
         recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+
+                if (!recyclerView.canScrollVertically(1)) {
+                    Toast.makeText(context, "Last", Toast.LENGTH_LONG).show()
+                    page++
+                    fetchDataWithScroll(page)
+                }
+            }
+        })
         recyclerView.adapter = adapter
         val nextButton = view.findViewById<Button>(R.id.nextButton)
         val backButton = view.findViewById<Button>(R.id.backButton)
