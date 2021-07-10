@@ -1,4 +1,4 @@
-package com.kodluyoruz.networkandretrofit
+package com.kodluyoruz.networkandretrofit.utils
 
 import android.util.Log
 import com.kodluyoruz.networkandretrofit.models.listing.RickAndMortyBaseResponse

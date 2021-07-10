@@ -6,6 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kodluyoruz.networkandretrofit.models.listing.RickAndMortyBaseResponse
+import com.kodluyoruz.networkandretrofit.utils.RetrofitHelper
+import com.kodluyoruz.networkandretrofit.utils.RetrofitResponseHandler
+import com.kodluyoruz.networkandretrofit.utils.RickMortyAdapter
 
 class MainActivity : AppCompatActivity() {
     private val retrofitHelper = RetrofitHelper()

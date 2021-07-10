@@ -1,4 +1,4 @@
-package com.kodluyoruz.networkandretrofit
+package com.kodluyoruz.networkandretrofit.utils
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.kodluyoruz.networkandretrofit.R
 import com.kodluyoruz.networkandretrofit.models.core.Character
 
 class RickMortyAdapter : RecyclerView.Adapter<RickMortyAdapter.RickMortyViewHolder>() {
