@@ -2,6 +2,9 @@ package com.kodluyoruz.networkandretrofit.utils
 
 import android.util.Log
 import com.kodluyoruz.networkandretrofit.models.listing.RickAndMortyBaseResponse
+import okhttp3.Interceptor
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -14,9 +17,24 @@ interface RetrofitResponseHandler {
 }
 
 class RetrofitHelper {
-    var retrofit: Retrofit = Retrofit.Builder()
+
+    private val okhttp: OkHttpClient = OkHttpClient.Builder()
+        .addInterceptor(Interceptor {
+            val token = SharedPreferencesUtil.getToken()
+            val request = it.request().newBuilder().addHeader("X-Token", "$token").build()
+            it.proceed(request)
+        })
+        .addInterceptor(
+            HttpLoggingInterceptor()
+                .setLevel(HttpLoggingInterceptor.Level.HEADERS)
+        )
+
+        .build()
+
+    private var retrofit: Retrofit = Retrofit.Builder()
         .baseUrl("https://rickandmortyapi.com/api/")
         .addConverterFactory(GsonConverterFactory.create())
+        .client(okhttp)
         .build()
     var service: RickAndMortyApiService = retrofit.create(RickAndMortyApiService::class.java)
 

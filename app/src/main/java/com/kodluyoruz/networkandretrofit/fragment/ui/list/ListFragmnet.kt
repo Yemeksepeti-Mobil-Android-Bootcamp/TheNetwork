@@ -15,9 +15,10 @@ import com.kodluyoruz.networkandretrofit.models.listing.RickAndMortyBaseResponse
 import com.kodluyoruz.networkandretrofit.utils.RetrofitHelper
 import com.kodluyoruz.networkandretrofit.utils.RetrofitResponseHandler
 import com.kodluyoruz.networkandretrofit.utils.RickMortyAdapter
+import com.kodluyoruz.networkandretrofit.utils.SharedPreferencesUtil
 
 class ListFragment : Fragment() {
-    private val retrofitHelper = RetrofitHelper()
+    private var retrofitHelper: RetrofitHelper? = null
     private var adapter = RickMortyAdapter()
     private var page = 1
 
@@ -32,14 +33,19 @@ class ListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.v("ListFragment", "onViewCreated")
+        retrofitHelper = RetrofitHelper()
+
         initViews(view)
+        page = SharedPreferencesUtil.getPage()
+        Log.v("SharedPref", "Page: $page")
         fetchData(page)
     }
 
     private fun fetchData(page: Int = 1) {
         Log.v("ListFragment", "fetchData")
+
         Toast.makeText(context, "Page Number: $page", Toast.LENGTH_SHORT).show()
-        retrofitHelper.listCharacter(page = page, object : RetrofitResponseHandler {
+        retrofitHelper?.listCharacter(page = page, object : RetrofitResponseHandler {
             override fun onError() {
                 Log.v("MainActivity", "Error :(")
 
@@ -51,10 +57,16 @@ class ListFragment : Fragment() {
             }
         })
     }
+
+    override fun onPause() {
+        super.onPause()
+        SharedPreferencesUtil.savePage(page)
+    }
+
     private fun fetchDataWithScroll(page: Int = 1) {
         Log.v("ListFragment", "fetchData")
         Toast.makeText(context, "Page Number: $page", Toast.LENGTH_SHORT).show()
-        retrofitHelper.listCharacter(page = page, object : RetrofitResponseHandler {
+        retrofitHelper?.listCharacter(page = page, object : RetrofitResponseHandler {
             override fun onError() {
                 Log.v("MainActivity", "Error :(")
 
